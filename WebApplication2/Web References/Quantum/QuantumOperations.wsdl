@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="UpdateOrderStatus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="orderStatuses" type="tns:ArrayOfOrderStatus" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfOrderStatus">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="OrderStatus" nillable="true" type="tns:OrderStatus" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="OrderStatus">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Attribute">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="HasBackordered" type="s:boolean" />
+              <s:element minOccurs="1" maxOccurs="1" name="IsComplete" type="s:boolean" />
+              <s:element minOccurs="0" maxOccurs="1" name="ClientOrderID" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="CompleteDate" type="s:dateTime" />
+              <s:element minOccurs="1" maxOccurs="1" name="IsCanceled" type="s:boolean" />
+              <s:element minOccurs="0" maxOccurs="1" name="Shipments" type="tns:ArrayOfShippingItem" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="Attribute" abstract="true" />
+      <s:complexType name="OrderStatusResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Attribute">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="ClientOrderID" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="Success" type="s:boolean" />
+              <s:element minOccurs="0" maxOccurs="1" name="StatusName" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Error" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfShippingItem">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ShippingItem" nillable="true" type="tns:ShippingItem" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ShippingItem">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ExtensionData" type="tns:ExtensionDataObject" />
+          <s:element minOccurs="0" maxOccurs="1" name="MailingListID" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="PickSlipID" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="ShipDate" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="ShippingMethod" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TrackingNumber" type="tns:ArrayOfString" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ExtensionDataObject" />
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="UpdateOrderStatusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdateOrderStatusResult" type="tns:ArrayOfOrderStatusResponse" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfOrderStatusResponse">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="OrderStatusResponse" nillable="true" type="tns:OrderStatusResponse" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="QuantumSoapHeader" type="tns:QuantumSoapHeader" />
+      <s:complexType name="QuantumSoapHeader">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Username" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+        </s:sequence>
+        <s:anyAttribute />
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="UpdateOrderStatusSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateOrderStatus" />
+  </wsdl:message>
+  <wsdl:message name="UpdateOrderStatusSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateOrderStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateOrderStatusQuantumSoapHeader">
+    <wsdl:part name="QuantumSoapHeader" element="tns:QuantumSoapHeader" />
+  </wsdl:message>
+  <wsdl:portType name="QuantumOperationsSoap">
+    <wsdl:operation name="UpdateOrderStatus">
+      <wsdl:input message="tns:UpdateOrderStatusSoapIn" />
+      <wsdl:output message="tns:UpdateOrderStatusSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="QuantumOperationsSoap" type="tns:QuantumOperationsSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="UpdateOrderStatus">
+      <soap:operation soapAction="http://tempuri.org/UpdateOrderStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:UpdateOrderStatusQuantumSoapHeader" part="QuantumSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+        <soap:header message="tns:UpdateOrderStatusQuantumSoapHeader" part="QuantumSoapHeader" use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="QuantumOperationsSoap12" type="tns:QuantumOperationsSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="UpdateOrderStatus">
+      <soap12:operation soapAction="http://tempuri.org/UpdateOrderStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:UpdateOrderStatusQuantumSoapHeader" part="QuantumSoapHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:UpdateOrderStatusQuantumSoapHeader" part="QuantumSoapHeader" use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="QuantumOperations">
+    <wsdl:port name="QuantumOperationsSoap" binding="tns:QuantumOperationsSoap">
+      <soap:address location="http://localhost:57325/Webservice/QuantumOperations.asmx" />
+    </wsdl:port>
+    <wsdl:port name="QuantumOperationsSoap12" binding="tns:QuantumOperationsSoap12">
+      <soap12:address location="http://localhost:57325/Webservice/QuantumOperations.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
